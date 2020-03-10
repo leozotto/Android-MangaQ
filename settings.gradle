@@ -1,0 +1,2 @@
+rootProject.name='MangaQ'
+include ':app'

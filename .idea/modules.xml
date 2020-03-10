@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MangaQ.iml" filepath="$PROJECT_DIR$/MangaQ.iml" group="MangaQ" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="MangaQ/app" />
+    </modules>
+  </component>
+</project>
