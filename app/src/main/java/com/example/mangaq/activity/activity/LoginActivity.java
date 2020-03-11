@@ -1,4 +1,4 @@
-package com.example.mangaq.activity;
+package com.example.mangaq.activity.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
