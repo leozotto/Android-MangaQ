@@ -19,6 +19,7 @@
         app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/logotransparente" />
 
+
     <EditText
         android:id="@+id/editCadastroEmail"
         android:layout_width="0dp"
@@ -34,9 +35,17 @@
         android:textColorHint="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/editCadastroSenha"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+<!--    <android.support.design.widget.TextInputLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:passwordToggleEnabled="true"-->
+<!--        tools:ignore="MissingConstraints">-->
+
+<!--    </android.support.design.widget.TextInputLayout>-->
 
     <EditText
         android:id="@+id/editCadastroSenha"
@@ -102,3 +111,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
