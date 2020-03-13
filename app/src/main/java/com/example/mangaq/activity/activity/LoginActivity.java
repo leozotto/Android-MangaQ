@@ -20,4 +20,9 @@ public class LoginActivity extends AppCompatActivity {
         Intent i = new Intent(LoginActivity.this, CadastroActivity.class);
         startActivity(i);
     }
+    public void abrirHome(View view) {
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(i);
+    }
+
 }
