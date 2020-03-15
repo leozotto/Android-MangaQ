@@ -122,6 +122,11 @@ public class CadastroActivity extends AppCompatActivity {
         );
 
     }
+    public void abrirLogin(View view) {
+        Intent i = new Intent(CadastroActivity.this, LoginActivity.class);
+        startActivity(i);
+
+    }
 
     public void inicializarComponentes() {
         campoNome = findViewById(R.id.editCadastroNome);
