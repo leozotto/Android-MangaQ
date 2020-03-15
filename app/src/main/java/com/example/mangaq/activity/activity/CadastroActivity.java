@@ -40,8 +40,8 @@ public class CadastroActivity extends AppCompatActivity {
 
         //cadastrar usuario
         progressBar.setVisibility(View.GONE);
-        botaoCadastrar.setOnClickListener(new View.OnClickListener() {
 
+        botaoCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -57,7 +57,7 @@ public class CadastroActivity extends AppCompatActivity {
                             usuario.setNome(textoNome);
                             usuario.setEmail(textoEmail);
                             usuario.setSenha(textoSenha);
-                            cadastrarUsuario(usuario);
+                            cadastrar(usuario);
 
                         } else {
                             Toast.makeText(CadastroActivity.this,
@@ -83,7 +83,7 @@ public class CadastroActivity extends AppCompatActivity {
         });
     }
 
-    public void cadastrarUsuario(Usuario usuario) {
+    public void cadastrar(Usuario usuario) {
 
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         autenticacao.createUserWithEmailAndPassword(
@@ -129,7 +129,6 @@ public class CadastroActivity extends AppCompatActivity {
         campoSenha = findViewById(R.id.editCadastroSenha);
         botaoCadastrar = findViewById(R.id.buttonCadastrar);
         progressBar = findViewById(R.id.progressCadastro);
-
     }
 
 }

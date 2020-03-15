@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "119126857395",
+    "firebase_url": "https://mangaq-c1fb2.firebaseio.com",
+    "project_id": "mangaq-c1fb2",
+    "storage_bucket": "mangaq-c1fb2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119126857395:android:1ad5e146b579079aa702c6",
+        "android_client_info": {
+          "package_name": "com.example.mangaq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "119126857395-mq50k8i555opp337d6mpnj8ipms7gu6k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mangaq",
+            "certificate_hash": "4f4a5e3f8ad9acc446b560436b6d56b4f2612d4e"
+          }
+        },
+        {
+          "client_id": "119126857395-9fl2dkj6vas0l8l987itn6lpv7v5ia4l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpqesmDZ_N765ugy9vnmxHgVmX3yalRZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "119126857395-9fl2dkj6vas0l8l987itn6lpv7v5ia4l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
