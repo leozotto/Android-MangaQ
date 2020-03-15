@@ -123,7 +123,7 @@ public class CadastroActivity extends AppCompatActivity {
 
     }
     public void abrirLogin(View view) {
-        Intent i = new Intent(CadastroActivity.this, LoginActivity.class);
+        Intent i = new Intent(CadastroActivity.this, MainActivity.class);
         startActivity(i);
 
     }
