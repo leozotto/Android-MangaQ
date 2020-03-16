@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //conf de objetos
-        //autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+        autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
         //conf bottom navigation view
         configuraBottomNavigationView();
@@ -95,24 +95,24 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
-    //@Override
-  //  public boolean onOptionsItemSelected(MenuItem item){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
 
-//        switch(item.getItemId()){
-//            case R.id.menu_sair :
-//                deslogarUsuario();
-//                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//                break;
+       switch(item.getItemId()){
+            case R.id.menu_sair :
+                deslogarUsuario();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                break;
 
-        //}
-      //  return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
     }
-//    private void deslogarUsuario(){
-//        try {
-//            autenticacao.signOut();
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
+    private void deslogarUsuario(){
+        try {
+            autenticacao.signOut();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
-    //}
-//}
+    }
+}
