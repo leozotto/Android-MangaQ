@@ -30,29 +30,32 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         verificarUsuarioLogado();
         inicializarComponentes();
 
         //login usuario
         progressBar.setVisibility(View.GONE);
         botaoEntrar.setOnClickListener(new View.OnClickListener() {
-            String textoEmail = campoEmail.getText().toString();
-            String textoSenha = campoSenha.getText().toString();
+
 
             @Override
             public void onClick(View v) {
+                String textoEmail = campoEmail.getText().toString();
+                String textoSenha = campoSenha.getText().toString();
                 if (!textoEmail.isEmpty()) {
                     if (!textoSenha.isEmpty()) {
 
                         usuario = new Usuario();
                         usuario.setEmail(textoEmail);
                         usuario.setSenha(textoSenha);
+
                         validarLogin(usuario);
+
                     } else {
                         Toast.makeText(LoginActivity.this,
-                                "Preencha a Senha",
+                                "Preencha a Senha!",
                                 Toast.LENGTH_SHORT).show();
-
                     }
                 } else {
                     Toast.makeText(LoginActivity.this,
@@ -78,12 +81,13 @@ public class LoginActivity extends AppCompatActivity {
 
         autenticacao.signInWithEmailAndPassword(
                 usuario.getEmail(),
-                usuario.getSenha()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                usuario.getSenha()
+                ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     progressBar.setVisibility(View.GONE);
-                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 }else {
                     Toast.makeText(LoginActivity.this,
@@ -107,9 +111,5 @@ public class LoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressLogin);
     }
 
-    public void abrirHome(View view) {
-        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(i);
-    }
 
 }
