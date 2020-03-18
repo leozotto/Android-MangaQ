@@ -60,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
     private void habilitarNavegation(BottomNavigationViewEx viewEx){
         viewEx.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem Item) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                switch (menuItem.getItemId()){
+                switch (Item.getItemId()){
                     case R.id.ic_home:
                         fragmentTransaction.replace(R.id.viewPager,new FeedFragment()).commit();
                         return true;

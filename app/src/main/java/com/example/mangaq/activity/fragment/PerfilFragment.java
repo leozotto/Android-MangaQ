@@ -7,21 +7,29 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import com.example.mangaq.R;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class PerfilFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    private String mParam1;
-    private String mParam2;
-
+    private ProgressBar progressBar;
+    private CircleImageView imageView;
+    public GridView gridViewPerfil;
+    
     public PerfilFragment() {
 
     }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
+        return inflater.inflate(R.layout.fragment_perfil, container, false);
+    }
 
 
 }
