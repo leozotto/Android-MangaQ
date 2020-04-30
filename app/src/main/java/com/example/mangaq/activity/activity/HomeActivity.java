@@ -5,14 +5,6 @@ package com.example.mangaq.activity.activity;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
-import com.example.mangaq.R;
-import com.example.mangaq.activity.helper.SliderPagerAdapter;
-import com.example.mangaq.activity.helper.Slide;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
