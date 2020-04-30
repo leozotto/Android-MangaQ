@@ -20,22 +20,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/buttonEditarPerfil"
+        android:id="@+id/buttonSalvarPerfil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="24dp"
-        android:text="Editar Perfil"
+        android:text="Salvar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.584"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="editarPerfil"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/nomePerfil"
+    <EditText
+        android:id="@+id/nomeEditPerfil"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -51,29 +49,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonEditarPerfil" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonSalvarPerfil" />
 
-    <TextView
-        android:id="@+id/senhaPerfil"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/background_caixa_texto"
-        android:ems="10"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="senha"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSenha" />
-
-    <TextView
-        android:id="@+id/textSenha"
+    <EditText
+        android:id="@+id/textEditEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -89,19 +68,63 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nomePerfil" />
+        app:layout_constraintTop_toBottomOf="@+id/nomeEditPerfil" />
 
-    <Switch
-        android:id="@+id/switchPerfil"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/senhaAtualEditPerfil"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:text="Notificações"
+        android:background="@drawable/background_caixa_texto"
+        android:ems="10"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Senha Atual"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/senhaPerfil" />
+        app:layout_constraintTop_toBottomOf="@+id/textEditEmail" />
 
+    <EditText
+        android:id="@+id/novaSenhaEditPerfil"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/background_caixa_texto"
+        android:ems="10"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Nova Senha"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/senhaAtualEditPerfil" />
+
+    <EditText
+        android:id="@+id/novaSenhaaEditPerfil"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/background_caixa_texto"
+        android:ems="10"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Confirmar Nova Senha"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/novaSenhaEditPerfil" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="buttonSalvarPerfil" type="id" />
+    <item name="nomeEditPerfil" type="id" />
+    <item name="textEditEmail" type="id" />
+    <item name="senhaAtualEditPerfil" type="id" />
+    <item name="novaSenhaEditPerfil" type="id" />
+</resources>
