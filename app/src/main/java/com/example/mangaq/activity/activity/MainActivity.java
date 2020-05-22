@@ -1,16 +1,16 @@
 package com.example.mangaq.activity.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.content.Intent;
-import android.view.Menu;
-import android.os.Bundle;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.example.mangaq.R;
 import com.example.mangaq.activity.fragment.FavoritosFragment;
@@ -66,11 +66,12 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (Item.getItemId()){
                     case R.id.ic_home:
+
                         fragmentTransaction.replace(R.id.viewPager,new FeedFragment()).commit();
                         return true;
 
                     case R.id.ic_pesquisa:
-                        fragmentTransaction.replace(R.id.viewPager,new PesquisaFragment()).commit();
+                         fragmentTransaction.replace(R.id.viewPager,new PesquisaFragment()).commit();
                         return true;
 
                     case R.id.ic_favoritos:
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.ic_perfil:
+
                         fragmentTransaction.replace(R.id.viewPager,new PerfilFragment()).commit();
                         return true;
                }

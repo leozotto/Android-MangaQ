@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "119126857395-49rsvpn5pafe2jaauos3scvor3j3ib4s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mangaq",
+            "certificate_hash": "a94a0da6be8f74df1d5695424d91bfc01e5bc12a"
+          }
+        },
+        {
           "client_id": "119126857395-mq50k8i555opp337d6mpnj8ipms7gu6k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.fragment.PerfilFragment">
+    tools:context=".activity.activity.PerfilActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView3"
@@ -19,23 +19,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
-        android:id="@+id/buttonEditarPerfil"
+        android:id="@+id/salvarPerfilButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="salvarPerfil"
         android:layout_marginStart="24dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="24dp"
-        android:text="Editar Perfil"
+        android:text="Salvar Perfil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.584"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:onClick="editarPerfil"
         />
 
-    <TextView
-        android:id="@+id/nomePerfil"
+    <EditText
+        android:id="@+id/editNome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -45,16 +46,16 @@
         android:ems="10"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Jãozinho"
+        android:hint="nome"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonEditarPerfil" />
+        app:layout_constraintTop_toBottomOf="@+id/salvarPerfilButton" />
 
-    <TextView
-        android:id="@+id/senhaPerfil"
+    <EditText
+        android:id="@+id/editSobrenome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -64,16 +65,16 @@
         android:ems="10"
         android:gravity="center"
         android:padding="10dp"
-        android:text="senha"
+        android:hint="sobrenome"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSenha" />
+        app:layout_constraintTop_toBottomOf="@+id/editNome" />
 
-    <TextView
-        android:id="@+id/textSenha"
+    <EditText
+        android:id="@+id/editApelido"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -83,25 +84,31 @@
         android:ems="10"
         android:gravity="center"
         android:padding="10dp"
-        android:text="joaozinho@gmail.com"
+        android:hint="apelido"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nomePerfil" />
+        app:layout_constraintTop_toBottomOf="@+id/editSobrenome" />
 
-    <Switch
-        android:id="@+id/switchPerfil"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/editEndereco"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:text="Notificações"
+        android:background="@drawable/background_caixa_texto"
+        android:ems="10"
+        android:gravity="center"
+        android:padding="10dp"
+        android:hint="endereco"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/senhaPerfil" />
-
+        app:layout_constraintTop_toBottomOf="@+id/editApelido" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

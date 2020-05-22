@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:onClick="salvarPerfill"
         android:id="@+id/buttonSalvarPerfil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/nomeEditPerfil"
+        android:id="@+id/editNomde"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -43,7 +44,7 @@
         android:ems="10"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Jãozinho"
+        android:hint="NOME"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +53,7 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonSalvarPerfil" />
 
     <EditText
-        android:id="@+id/textEditEmail"
+        android:id="@+id/editSobrendome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -62,16 +63,16 @@
         android:ems="10"
         android:gravity="center"
         android:padding="10dp"
-        android:text="joaozinho@gmail.com"
+        android:hint="editSobrenome"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nomeEditPerfil" />
+        app:layout_constraintTop_toBottomOf="@+id/editNome" />
 
     <EditText
-        android:id="@+id/senhaAtualEditPerfil"
+        android:id="@+id/editApeldido"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -81,16 +82,16 @@
         android:ems="10"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Senha Atual"
+        android:text="editApelido"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textEditEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/editSobrenome" />
 
     <EditText
-        android:id="@+id/novaSenhaEditPerfil"
+        android:id="@+id/editEndedreco"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -100,31 +101,12 @@
         android:ems="10"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Nova Senha"
+        android:text="endereco"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/senhaAtualEditPerfil" />
-
-    <EditText
-        android:id="@+id/novaSenhaaEditPerfil"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/background_caixa_texto"
-        android:ems="10"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="Confirmar Nova Senha"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/novaSenhaEditPerfil" />
+        app:layout_constraintTop_toBottomOf="@+id/editApelido" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
