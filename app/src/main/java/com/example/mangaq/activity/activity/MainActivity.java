@@ -1,5 +1,6 @@
 package com.example.mangaq.activity.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,10 +14,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.mangaq.R;
-import com.example.mangaq.activity.fragment.FavoritosFragment;
-import com.example.mangaq.activity.fragment.FeedFragment;
-import com.example.mangaq.activity.fragment.PerfilFragment;
-import com.example.mangaq.activity.fragment.PesquisaFragment;
+import com.example.mangaq.activity.fragment.FavoritosActivity;
+import com.example.mangaq.activity.fragment.HomeActivity;
+import com.example.mangaq.activity.fragment.PerfilActivity;
+import com.example.mangaq.activity.fragment.PesquisaActivity;
 import com.example.mangaq.activity.helper.ConfiguracaoFirebase;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
         configuraBottomNavigationView();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.viewPager,new FeedFragment()).commit();
+        //fragmentTransaction.replace(R.id.viewPager,new FeedFragment()).commit();
+
+
     }
 
     private void configuraBottomNavigationView(){
@@ -57,38 +60,35 @@ public class MainActivity extends AppCompatActivity {
         menuItem.setChecked(true);
 
     }
-    private void habilitarNavegation(BottomNavigationViewEx viewEx){
+    public static void habilitarNavegation(final Context context, final BottomNavigationViewEx viewEx){
         viewEx.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem Item) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                switch (Item.getItemId()){
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
                     case R.id.ic_home:
-
-                        fragmentTransaction.replace(R.id.viewPager,new FeedFragment()).commit();
-                        return true;
-
+                        viewEx.setSelectedItemId(R.id.ic_home);
+                        Intent intent = new Intent(context, HomeActivity.class);
+                        context.startActivity(intent);
+                        break;
                     case R.id.ic_pesquisa:
-                         fragmentTransaction.replace(R.id.viewPager,new PesquisaFragment()).commit();
-                        return true;
-
+                        Intent intent1 = new Intent(context, PesquisaActivity.class);
+                        context.startActivity(intent1);
+                        break;
                     case R.id.ic_favoritos:
-                        fragmentTransaction.replace(R.id.viewPager,new FavoritosFragment()).commit();
-                        return true;
-
+                        Intent intent2 = new Intent(context, FavoritosActivity.class);
+                        context.startActivity(intent2);
+                        break;
                     case R.id.ic_perfil:
-
-                        fragmentTransaction.replace(R.id.viewPager,new PerfilFragment()).commit();
-                        return true;
-               }
-
+                        Intent intent3 = new Intent(context, PerfilActivity.class);
+                        context.startActivity(intent3);
+                        break;
+                }
                 return false;
             }
         });
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 

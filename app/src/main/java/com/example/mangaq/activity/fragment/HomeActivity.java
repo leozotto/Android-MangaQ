@@ -1,4 +1,4 @@
-package com.example.mangaq.activity.activity;
+package com.example.mangaq.activity.fragment;
 
 
 

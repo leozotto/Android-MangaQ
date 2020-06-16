@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.fragment.PerfilFragment">
+    tools:context=".activity.fragment.PerfilActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView3"
@@ -19,22 +19,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
-        android:onClick="salvarPerfill"
-        android:id="@+id/buttonSalvarPerfil"
+        android:id="@+id/salvarPerfilButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="salvarPerfil"
         android:layout_marginStart="24dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="24dp"
-        android:text="Salvar"
+        android:text="Salvar Perfil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.584"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <EditText
-        android:id="@+id/editNomde"
+        android:id="@+id/editNome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -44,16 +46,16 @@
         android:ems="10"
         android:gravity="center"
         android:padding="10dp"
-        android:hint="NOME"
+        android:hint="nome"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSalvarPerfil" />
+        app:layout_constraintTop_toBottomOf="@+id/salvarPerfilButton" />
 
     <EditText
-        android:id="@+id/editSobrendome"
+        android:id="@+id/editSobrenome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -63,7 +65,7 @@
         android:ems="10"
         android:gravity="center"
         android:padding="10dp"
-        android:hint="editSobrenome"
+        android:hint="sobrenome"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +74,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editNome" />
 
     <EditText
-        android:id="@+id/editApeldido"
+        android:id="@+id/editApelido"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -82,7 +84,7 @@
         android:ems="10"
         android:gravity="center"
         android:padding="10dp"
-        android:text="editApelido"
+        android:hint="apelido"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +93,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editSobrenome" />
 
     <EditText
-        android:id="@+id/editEndedreco"
+        android:id="@+id/editEndereco"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -101,7 +103,7 @@
         android:ems="10"
         android:gravity="center"
         android:padding="10dp"
-        android:text="endereco"
+        android:hint="endereco"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"

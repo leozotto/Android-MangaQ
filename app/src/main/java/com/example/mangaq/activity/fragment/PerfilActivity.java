@@ -1,4 +1,4 @@
-package com.example.mangaq.activity.activity;
+package com.example.mangaq.activity.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mangaq.R;
-import com.example.mangaq.activity.fragment.PerfilFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +27,7 @@ public class PerfilActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_perfil);
+        setContentView(R.layout.activity_perfil);
 
         editNome = findViewById(R.id.editNome);
         editSobrenome = findViewById(R.id.editSobrenome);
@@ -45,7 +44,7 @@ public class PerfilActivity extends AppCompatActivity {
     }
 
     public void menuPrincipal(View view) {
-        Intent menuPrincipal = new Intent(PerfilActivity.this, PerfilFragment.class);
+        Intent menuPrincipal = new Intent(PerfilActivity.this, PerfilActivity.class);
         startActivity(menuPrincipal);
         finish();
     }
