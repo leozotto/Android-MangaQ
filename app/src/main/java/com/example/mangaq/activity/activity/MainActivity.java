@@ -1,6 +1,6 @@
 package com.example.mangaq.activity.activity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,8 +10,6 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.mangaq.R;
 import com.example.mangaq.activity.fragment.FavoritosActivity;
@@ -25,7 +23,6 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth autenticacao;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         //conf bottom navigation view
         configuraBottomNavigationView();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //fragmentTransaction.replace(R.id.viewPager,new FeedFragment()).commit();
-
-
     }
 
     private void configuraBottomNavigationView(){
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavigation);
         //navegacao
-        habilitarNavegation(bottomNavigationViewEx);
+        habilitarNavegation(MainActivity.this, bottomNavigationViewEx);
 
         //configura item selecionado
         Menu menu = bottomNavigationViewEx.getMenu();
@@ -60,27 +52,33 @@ public class MainActivity extends AppCompatActivity {
         menuItem.setChecked(true);
 
     }
-    public static void habilitarNavegation(final Context context, final BottomNavigationViewEx viewEx){
+    public static void habilitarNavegation(final Activity context, final BottomNavigationViewEx viewEx){
         viewEx.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.ic_home:
-                        viewEx.setSelectedItemId(R.id.ic_home);
-                        Intent intent = new Intent(context, HomeActivity.class);
-                        context.startActivity(intent);
+                        Intent icHome = new Intent(context, HomeActivity.class);
+                        context.startActivity(icHome);
+                        context.finish();
+//
                         break;
                     case R.id.ic_pesquisa:
-                        Intent intent1 = new Intent(context, PesquisaActivity.class);
-                        context.startActivity(intent1);
+                        Intent icPesquisa = new Intent(context, PesquisaActivity.class);
+                        context.startActivity(icPesquisa);
+                        context.finish();
                         break;
                     case R.id.ic_favoritos:
-                        Intent intent2 = new Intent(context, FavoritosActivity.class);
-                        context.startActivity(intent2);
+                        Intent icFavoritos = new Intent(context, FavoritosActivity.class);
+                        context.startActivity(icFavoritos);
+                        context.finish();
                         break;
+
                     case R.id.ic_perfil:
-                        Intent intent3 = new Intent(context, PerfilActivity.class);
-                        context.startActivity(intent3);
+                        Intent icPerfil = new Intent(context, PerfilActivity.class);
+                        context.startActivity(icPerfil);
+                        context.finish();
+
                         break;
                 }
                 return false;
