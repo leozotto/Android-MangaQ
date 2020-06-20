@@ -24,16 +24,15 @@
         android:id="@+id/salvarPerfilButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="salvarPerfil"
         android:layout_marginStart="24dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="24dp"
+        android:onClick="salvarPerfil"
         android:text="Salvar Perfil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.584"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editNome"
@@ -45,8 +44,8 @@
         android:background="@drawable/background_caixa_texto"
         android:ems="10"
         android:gravity="center"
-        android:padding="10dp"
         android:hint="nome"
+        android:padding="10dp"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,8 +63,8 @@
         android:background="@drawable/background_caixa_texto"
         android:ems="10"
         android:gravity="center"
-        android:padding="10dp"
         android:hint="sobrenome"
+        android:padding="10dp"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,8 +82,8 @@
         android:background="@drawable/background_caixa_texto"
         android:ems="10"
         android:gravity="center"
-        android:padding="10dp"
         android:hint="apelido"
+        android:padding="10dp"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,8 +101,8 @@
         android:background="@drawable/background_caixa_texto"
         android:ems="10"
         android:gravity="center"
-        android:padding="10dp"
         android:hint="endereco"
+        android:padding="10dp"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -111,4 +110,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editApelido" />
 
+    <include
+        layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editEndereco"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="0dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

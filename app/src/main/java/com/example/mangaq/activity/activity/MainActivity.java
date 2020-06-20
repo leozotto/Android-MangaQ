@@ -1,27 +1,31 @@
 package com.example.mangaq.activity.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.mangaq.R;
-import com.example.mangaq.activity.fragment.FavoritosActivity;
-import com.example.mangaq.activity.fragment.HomeActivity;
-import com.example.mangaq.activity.fragment.PerfilActivity;
-import com.example.mangaq.activity.fragment.PesquisaActivity;
 import com.example.mangaq.activity.helper.ConfiguracaoFirebase;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth autenticacao;
+    private FirebaseStorage storage;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,49 +40,33 @@ public class MainActivity extends AppCompatActivity {
         //conf de objetos
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
+        storage = FirebaseStorage.getInstance();
+        image = findViewById(R.id.image1);
+        getImagensTeste();
+
         //conf bottom navigation view
-        configuraBottomNavigationView();
+        ToolbarConfig toolbarConfig = new ToolbarConfig();
+        toolbarConfig.configuraBottomNavigationView(MainActivity.this);
     }
 
-    private void configuraBottomNavigationView() {
-        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavigation);
-        //navegacao
-        habilitarNavigation(bottomNavigationViewEx);
+    public void getImagensTeste() {
+        StorageReference storageReference = storage.getReferenceFromUrl("gs://mangaq-c1fb2.appspot.com/historias/uiid-historia-teste-fake/Capturar.PNG");
 
-        //configura item selecionado
-        Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(0);
-        menuItem.setChecked(true);
-    }
-
-    public void habilitarNavigation(final BottomNavigationViewEx viewEx) {
-        viewEx.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.ic_home:
-                        irParaTela(HomeActivity.class);
-                        break;
-                    case R.id.ic_pesquisa:
-                        irParaTela(PesquisaActivity.class);
-                        break;
-                    case R.id.ic_favoritos:
-                        irParaTela(FavoritosActivity.class);
-                        break;
-                    case R.id.ic_perfil:
-                        irParaTela(PerfilActivity.class);
-                        break;
+        storageReference.getDownloadUrl().addOnSuccessListener(
+                new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(image);
+                    }
                 }
-                return false;
-            }
-
-            private void irParaTela (Class activityClass) {
-                // startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                MainActivity.this.startActivity(new Intent(getApplicationContext(), activityClass));
-                MainActivity.this.finish();
-            }
-        });
-
+        ).addOnFailureListener(
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MainActivity.this, "Preencha a senha!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
     }
 
     @Override
@@ -105,6 +93,5 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

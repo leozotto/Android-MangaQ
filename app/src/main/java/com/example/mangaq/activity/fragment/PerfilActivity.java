@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mangaq.R;
+import com.example.mangaq.activity.activity.ToolbarConfig;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +36,10 @@ public class PerfilActivity extends AppCompatActivity {
         editEndereco = findViewById(R.id.editEndereco);
 
         mAuth = FirebaseAuth.getInstance();
+
+        //conf bottom navigation view
+        ToolbarConfig toolbarConfig = new ToolbarConfig();
+        toolbarConfig.configuraBottomNavigationView(PerfilActivity.this);
     }
 
     @Override

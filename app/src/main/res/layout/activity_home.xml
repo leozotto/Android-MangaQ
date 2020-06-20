@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.fragment.HomeActivity"
+    android:orientation="vertical"
     >
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="540dp">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Feed"
+            android:textColor="@color/branco"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+    </ScrollView>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="75dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Feed"
-        android:textColor="@color/branco"
-        android:textSize="24dp"
-        android:textStyle="bold" />
-</FrameLayout>
+    <include
+        layout="@layout/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp" />
+
+</LinearLayout>
