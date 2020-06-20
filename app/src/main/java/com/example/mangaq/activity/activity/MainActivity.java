@@ -1,6 +1,5 @@
 package com.example.mangaq.activity.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -41,47 +40,42 @@ public class MainActivity extends AppCompatActivity {
         configuraBottomNavigationView();
     }
 
-    private void configuraBottomNavigationView(){
+    private void configuraBottomNavigationView() {
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavigation);
         //navegacao
-        habilitarNavegation(MainActivity.this, bottomNavigationViewEx);
+        habilitarNavigation(bottomNavigationViewEx);
 
         //configura item selecionado
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
-
     }
-    public static void habilitarNavegation(final Activity context, final BottomNavigationViewEx viewEx){
+
+    public void habilitarNavigation(final BottomNavigationViewEx viewEx) {
         viewEx.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.ic_home:
-                        Intent icHome = new Intent(context, HomeActivity.class);
-                        context.startActivity(icHome);
-                        context.finish();
-//
+                        irParaTela(HomeActivity.class);
                         break;
                     case R.id.ic_pesquisa:
-                        Intent icPesquisa = new Intent(context, PesquisaActivity.class);
-                        context.startActivity(icPesquisa);
-                        context.finish();
+                        irParaTela(PesquisaActivity.class);
                         break;
                     case R.id.ic_favoritos:
-                        Intent icFavoritos = new Intent(context, FavoritosActivity.class);
-                        context.startActivity(icFavoritos);
-                        context.finish();
+                        irParaTela(FavoritosActivity.class);
                         break;
-
                     case R.id.ic_perfil:
-                        Intent icPerfil = new Intent(context, PerfilActivity.class);
-                        context.startActivity(icPerfil);
-                        context.finish();
-
+                        irParaTela(PerfilActivity.class);
                         break;
                 }
                 return false;
+            }
+
+            private void irParaTela (Class activityClass) {
+                // startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                MainActivity.this.startActivity(new Intent(getApplicationContext(), activityClass));
+                MainActivity.this.finish();
             }
         });
 
@@ -89,28 +83,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main,menu );
+        inflater.inflate(R.menu.menu_main, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-
-       switch(item.getItemId()){
-            case R.id.menu_sair :
-                deslogarUsuario();
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                break;
-
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_sair) {
+            deslogarUsuario();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
+
         return super.onOptionsItemSelected(item);
     }
-    private void deslogarUsuario(){
+
+    private void deslogarUsuario() {
         try {
             autenticacao.signOut();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
