@@ -1,13 +1,13 @@
-package com.example.mangaq.activity.activity;
+package com.example.mangaq.activity.util;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 
 import com.example.mangaq.R;
+import com.example.mangaq.activity.activity.MainActivity;
 import com.example.mangaq.activity.fragment.FavoritosActivity;
 import com.example.mangaq.activity.fragment.PerfilActivity;
 import com.example.mangaq.activity.fragment.PesquisaActivity;
@@ -39,25 +39,19 @@ public class ToolbarConfig {
 
                 switch (item.getItemId()) {
                     case R.id.ic_home:
-                        irParaTela(activity, MainActivity.class);
+                        IntentManager.goTo(activity, MainActivity.class);
                         break;
                     case R.id.ic_pesquisa:
-                        irParaTela(activity, PesquisaActivity.class);
+                        IntentManager.goTo(activity, PesquisaActivity.class);
                         break;
                     case R.id.ic_favoritos:
-                        irParaTela(activity, FavoritosActivity.class);
+                        IntentManager.goTo(activity, FavoritosActivity.class);
                         break;
                     case R.id.ic_perfil:
-                        irParaTela(activity, PerfilActivity.class);
+                        IntentManager.goTo(activity, PerfilActivity.class);
                         break;
                 }
                 return false;
-            }
-
-            private void irParaTela(Activity activity, Class targetActivityClass) {
-                Intent intent = new Intent(activity, targetActivityClass);
-                activity.startActivity(intent);
-                activity.finish();
             }
         });
     }

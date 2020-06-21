@@ -10,7 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mangaq.R;
-import com.example.mangaq.activity.activity.ToolbarConfig;
+import com.example.mangaq.activity.util.IntentManager;
+import com.example.mangaq.activity.util.ToolbarConfig;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,12 +49,6 @@ public class PerfilActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void menuPrincipal(View view) {
-        Intent menuPrincipal = new Intent(PerfilActivity.this, PerfilActivity.class);
-        startActivity(menuPrincipal);
-        finish();
-    }
-
     public void salvarPerfil(View view) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -76,7 +71,7 @@ public class PerfilActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         String message = "Dados Cadastrados com Sucesso!";
                         Toast.makeText(PerfilActivity.this,message,Toast.LENGTH_SHORT).show();
-                        menuPrincipal(null);
+                        IntentManager.goTo(PerfilActivity.this, PerfilActivity.class);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

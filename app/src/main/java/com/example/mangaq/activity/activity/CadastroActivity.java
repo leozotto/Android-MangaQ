@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.mangaq.R;
 import com.example.mangaq.activity.helper.ConfiguracaoFirebase;
 import com.example.mangaq.activity.model.Usuario;
+import com.example.mangaq.activity.util.IntentManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -123,10 +124,7 @@ public class CadastroActivity extends AppCompatActivity {
 
     }
     public void abrirLogin(View view) {
-        Intent i = new Intent(CadastroActivity.this, MainActivity.class);
-
-        startActivity(i);
-
+        IntentManager.goTo(CadastroActivity.this, MainActivity.class);
     }
 
     public void inicializarComponentes() {

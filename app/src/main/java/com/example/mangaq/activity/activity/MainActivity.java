@@ -9,8 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,16 +20,15 @@ import com.example.mangaq.R;
 import com.example.mangaq.activity.helper.ConfiguracaoFirebase;
 import com.example.mangaq.activity.holder.HistoryHolder;
 import com.example.mangaq.activity.model.History;
+import com.example.mangaq.activity.util.ImageManager;
+import com.example.mangaq.activity.util.ToolbarConfig;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth autenticacao;
@@ -104,16 +101,13 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new FirestoreRecyclerAdapter<History, HistoryHolder>(response) {
             @Override
-            public void onBindViewHolder(@NonNull HistoryHolder holder, int position, @NonNull History model) {
-                holder.getTvNome().setText(model.getNome());
-                holder.getTvAutor().setText(model.getAutor().toString());
-                holder.getDataCriacao().setText(model.getDataCriacaoFormatada());
-                MainActivity.this.carregarCapaHistoria(model.getCapa(), holder.getImageView());
+            public void onBindViewHolder(@NonNull HistoryHolder holder, int position, @NonNull History historia) {
+                holder.getTvNome().setText(historia.getNome());
+                holder.getTvAutor().setText(historia.getAutor().toString());
+                holder.getDataCriacao().setText(historia.getDataCriacaoFormatada());
+                ImageManager.carregarImagemFirestoreEmImageViewPorUrl(storage, historia.getCapa(), holder.getImageView(), MainActivity.this);
 
-                holder.itemView.setOnClickListener(v -> {
-                    Snackbar.make(historyList, model.getNome() + ", " + model.getAutor().toString() + " at ", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                });
+                holder.itemView.setOnClickListener(v -> abreCapitulos(historia));
             }
 
             @Override
@@ -134,13 +128,10 @@ public class MainActivity extends AppCompatActivity {
         historyList.setAdapter(adapter);
     }
 
-    private void carregarCapaHistoria(String url, ImageView imageView) {
-        StorageReference storageReference = storage.getReferenceFromUrl(url);
-        storageReference.getDownloadUrl().addOnSuccessListener(
-                uri -> Picasso.get().load(uri).into(imageView)
-        ).addOnFailureListener(
-                e -> Toast.makeText(MainActivity.this, "Erro ao carregar imagem!", Toast.LENGTH_SHORT).show()
-        );
+    private void abreCapitulos (History historia) {
+        Intent leituraHistoria = new Intent(MainActivity.this, Capitulos.class);
+        leituraHistoria.putExtra("historyId", historia.getId());
+        startActivity(leituraHistoria);
     }
 
     @Override
