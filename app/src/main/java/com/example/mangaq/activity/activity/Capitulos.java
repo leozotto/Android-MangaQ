@@ -16,20 +16,29 @@ import com.example.mangaq.activity.model.History;
 import com.example.mangaq.activity.util.ImageManager;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
 
 public class Capitulos extends AppCompatActivity {
     private String historyId;
+    FirebaseFirestore firestore;
+    private FirestoreRecyclerAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capitulos);
 
+        firestore = FirebaseFirestore.getInstance();
+
         Intent intent = getIntent();
         historyId = intent.getStringExtra("historyId");
     }
+
     private void buscarListaHistorias() {
         Query query = firestore.collection("historias");
 
@@ -43,9 +52,9 @@ public class Capitulos extends AppCompatActivity {
                 holder.getTvNome().setText(historia.getNome());
                 holder.getTvAutor().setText(historia.getAutor().toString());
                 holder.getDataCriacao().setText(historia.getDataCriacaoFormatada());
-                ImageManager.carregarImagemFirestoreEmImageViewPorUrl(storage, historia.getCapa(), holder.getImageView(), MainActivity.this);
+//                ImageManager.carregarImagemFirestoreEmImageViewPorUrl(storage, historia.getCapa(), holder.getImageView(), MainActivity.this);
 
-                holder.itemView.setOnClickListener(v -> abreCapitulos(historia));
+//                holder.itemView.setOnClickListener(v -> abreCapitulos(historia));
             }
 
             @Override
@@ -62,7 +71,7 @@ public class Capitulos extends AppCompatActivity {
             }
         };
 
-        adapter.notifyDataSetChanged();
-        historyList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();Ma
+//        historyList.setAdapter(adapter);
     }
 }
