@@ -3,6 +3,7 @@ package com.example.mangaq.activity.model;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @IgnoreExtraProperties
@@ -39,11 +40,11 @@ public class Chapter {
         this.nome = nome;
     }
 
-    public DocumentReference getAutor() {
+    public DocumentReference getInicio() {
         return inicio;
     }
 
-    public void setAutor(DocumentReference inicio) {
+    public void setInicio(DocumentReference inicio) {
         this.inicio = inicio;
     }
 
@@ -61,5 +62,8 @@ public class Chapter {
 
     public void setDataCriacao(Date dataCriacao) {
         this.dataCriacao = dataCriacao;
+    }
+    public String getDataCriacaoFormatada() {
+        return new SimpleDateFormat("dd/MM/yyyy").format(dataCriacao);
     }
 }

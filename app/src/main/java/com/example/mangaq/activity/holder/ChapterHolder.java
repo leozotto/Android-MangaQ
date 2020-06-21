@@ -1,19 +1,18 @@
 package com.example.mangaq.activity.holder;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mangaq.R;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class ChapterHolder extends RecyclerView.ViewHolder {
     private TextView tvNome;
     private TextView tvAutor;
     private TextView dataCriacao;
-    private CircleImageView imageView;
+    private ImageView imageView;
 
     public ChapterHolder(View view) {
         super(view);
@@ -47,11 +46,11 @@ public class ChapterHolder extends RecyclerView.ViewHolder {
         this.dataCriacao = dataCriacao;
     }
 
-    public CircleImageView getImageView() {
+    public ImageView getImageView() {
         return imageView;
     }
 
-    public void setImageView(CircleImageView imageView) {
+    public void setImageView(ImageView imageView) {
         this.imageView = imageView;
     }
 }

@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.example.mangaq.activity.helper.ConfiguracaoFirebase;
 import com.example.mangaq.activity.holder.HistoryHolder;
 import com.example.mangaq.activity.model.History;
 import com.example.mangaq.activity.util.ImageManager;
+import com.example.mangaq.activity.util.IntentManager;
 import com.example.mangaq.activity.util.ToolbarConfig;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -29,6 +31,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth autenticacao;
@@ -103,7 +107,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onBindViewHolder(@NonNull HistoryHolder holder, int position, @NonNull History historia) {
                 holder.getTvNome().setText(historia.getNome());
-                holder.getTvAutor().setText(historia.getAutor().toString());
+
+                // TODO: Criar index no firebase para nao precisar usar isso:
+                FirebaseFirestore
+                        .getInstance()
+                        .collection("usuarios")
+                        .document(historia.getAutor().getId())
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            holder.getTvAutor().setText(documentSnapshot.getString("nome"));
+                        })
+                        .addOnFailureListener(e -> {
+                            holder.getTvAutor().setText(" - ");
+                            Toast.makeText(MainActivity.this, "Erro ao carregar autor!", Toast.LENGTH_SHORT).show();
+                        });
+
                 holder.getDataCriacao().setText(historia.getDataCriacaoFormatada());
                 ImageManager.carregarImagemFirestoreEmImageViewPorUrl(storage, historia.getCapa(), holder.getImageView(), MainActivity.this);
 
@@ -128,10 +146,12 @@ public class MainActivity extends AppCompatActivity {
         historyList.setAdapter(adapter);
     }
 
-    private void abreCapitulos (History historia) {
-        Intent leituraHistoria = new Intent(MainActivity.this, Capitulos.class);
-        leituraHistoria.putExtra("historyId", historia.getId());
-        startActivity(leituraHistoria);
+    private void abreCapitulos(History historia) {
+        Bundle bundle = new Bundle();
+        bundle.putString("historyId", historia.getId());
+        bundle.putString("historyName", historia.getNome());
+
+        IntentManager.goTo(MainActivity.this, Capitulos.class, bundle, true);
     }
 
     @Override
