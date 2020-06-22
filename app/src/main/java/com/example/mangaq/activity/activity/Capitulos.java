@@ -31,32 +31,34 @@ public class Capitulos extends AppCompatActivity {
     private FirebaseStorage storage;
     private RecyclerView chapterList;
     private LinearLayoutManager linearLayoutManager;
-    private TextView historyName;
+    private TextView vHistoryName;
 
     private String historyId;
+    private String historyName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capitulos);
 
-        // Load firestore instances
+        // Load firebase instances
         firestore = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
 
         // Bind Components
         chapterList = findViewById(R.id.recyclerView);
-        historyName = findViewById(R.id.historyName);
+        vHistoryName = findViewById(R.id.historyName);
 
         // Get intent data
         Intent intent = getIntent();
         historyId = intent.getBundleExtra("bundleExtra").getString("historyId");
-        historyName.setText(intent.getBundleExtra("bundleExtra").getString("historyName"));
+        historyName = intent.getBundleExtra("bundleExtra").getString("historyName");
 
         // Get histories
         linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         chapterList.setLayoutManager(linearLayoutManager);
         buscarListaCapitulosHistoria();
+        vHistoryName.setText(historyName);
     }
 
     private void buscarListaCapitulosHistoria() {
@@ -99,9 +101,13 @@ public class Capitulos extends AppCompatActivity {
 
     private void abreLeitura(Chapter capitulo) {
         Bundle bundle = new Bundle();
+        bundle.putString("historyId", historyId);
+        bundle.putString("historyName", historyName);
         bundle.putString("chapterId", capitulo.getId());
+        bundle.putString("chapterName", capitulo.getNome());
+        bundle.putString("initialChapterGroup", capitulo.getInicio().getPath());
 
-        IntentManager.goTo(Capitulos.this, LeituraHistoria.class, bundle,true);
+        IntentManager.goTo(Capitulos.this, LeituraHistoria.class, bundle, true);
     }
 
     @Override
