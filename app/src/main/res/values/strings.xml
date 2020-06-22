@@ -5,4 +5,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="_"><![CDATA[<]]></string>
     <string name="nome_historia">NOME_HISTORIA</string>
+    <string name="_b"><![CDATA[<]]></string>
+    <string name="_n"><![CDATA[>]]></string>
+    <string name="__">-</string>
+    <string name="_0_0">0/0</string>
+    <string name="_x">X</string>
 </resources>
