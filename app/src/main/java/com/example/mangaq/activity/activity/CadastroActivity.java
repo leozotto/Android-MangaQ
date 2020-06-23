@@ -46,16 +46,14 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String textoNome = campoNome.getText().toString();
                 String textoEmail = campoEmail.getText().toString();
                 String textoSenha = campoSenha.getText().toString();
 
-                if (!textoNome.isEmpty()) {
+
                     if (!textoEmail.isEmpty()) {
                         if (!textoSenha.isEmpty()) {
 
                             usuario = new Usuario();
-                            usuario.setNome(textoNome);
                             usuario.setEmail(textoEmail);
                             usuario.setSenha(textoSenha);
                             cadastrar(usuario);
@@ -73,14 +71,7 @@ public class CadastroActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
 
                     }
-
-                } else {
-                    Toast.makeText(CadastroActivity.this,
-                            "Preencha o nome!",
-                            Toast.LENGTH_SHORT).show();
-
                 }
-            }
         });
     }
 
@@ -124,11 +115,11 @@ public class CadastroActivity extends AppCompatActivity {
 
     }
     public void abrirLogin(View view) {
-        IntentManager.goTo(CadastroActivity.this, MainActivity.class);
+        IntentManager.goTo(CadastroActivity.this, LoginActivity.class);
     }
 
     public void inicializarComponentes() {
-        campoNome = findViewById(R.id.editCadastroNome);
+        //campoNome = findViewById(R.id.editCadastroNome);
         campoEmail = findViewById(R.id.editCadastroEmail);
         campoSenha = findViewById(R.id.editCadastroSenha);
         botaoCadastrar = findViewById(R.id.buttonCadastrar);
