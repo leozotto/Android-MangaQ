@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PerfilActivity extends AppCompatActivity {
-    private EditText editNome, editSobrenome, editEndereco, editApelido;
+    private EditText editNome, editSobrenome, editEndereco, editApelido, editIdade;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
@@ -34,6 +34,7 @@ public class PerfilActivity extends AppCompatActivity {
         editNome = findViewById(R.id.editNome);
         editSobrenome = findViewById(R.id.editSobrenome);
         editApelido = findViewById(R.id.editApelido);
+        editIdade = findViewById(R.id.editIdade);
         editEndereco = findViewById(R.id.editEndereco);
 
         mAuth = FirebaseAuth.getInstance();
@@ -55,14 +56,16 @@ public class PerfilActivity extends AppCompatActivity {
         String nome = editNome.getText().toString();
         String sobrenome = editSobrenome.getText().toString();
         String apelido = editApelido.getText().toString();
-        String endereço = editEndereco.getText().toString();
+        String idade = editIdade.getText().toString();
+        String endereco = editEndereco.getText().toString();
 
         Map<String,Object> dadosUsuario = new HashMap<>();
 
         dadosUsuario.put("nome",nome);
         dadosUsuario.put("sobrenome",sobrenome);
         dadosUsuario.put("apelido",apelido);
-        dadosUsuario.put("endereço",endereço);
+        dadosUsuario.put("idade",idade);
+        dadosUsuario.put("endereço",endereco);
 
         db.collection("usuarios").document(user.getUid())
                 .set(dadosUsuario)

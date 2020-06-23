@@ -46,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
                 String textoSenha = campoSenha.getText().toString();
                 if (!textoEmail.isEmpty()) {
                     if (!textoSenha.isEmpty()) {
-
                         usuario = new Usuario();
                         usuario.setEmail(textoEmail);
                         usuario.setSenha(textoSenha);

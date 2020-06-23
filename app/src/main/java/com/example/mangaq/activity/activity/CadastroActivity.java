@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mangaq.R;
+import com.example.mangaq.activity.fragment.PerfilActivity;
 import com.example.mangaq.activity.helper.ConfiguracaoFirebase;
 import com.example.mangaq.activity.model.Usuario;
 import com.example.mangaq.activity.util.IntentManager;
@@ -86,9 +87,9 @@ public class CadastroActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.VISIBLE);
                             Toast.makeText(CadastroActivity.this, "Cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                            startActivity(new Intent(getApplicationContext(), PerfilActivity.class));
                             finish();
                         } else {
                             progressBar.setVisibility(View.GONE);
@@ -107,7 +108,6 @@ public class CadastroActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                             Toast.makeText(CadastroActivity.this, "Erro: " + erroExcecao, Toast.LENGTH_SHORT).show();
-
                         }
                     }
                 }
