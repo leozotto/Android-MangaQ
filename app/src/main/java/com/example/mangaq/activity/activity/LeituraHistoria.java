@@ -34,7 +34,7 @@ public class LeituraHistoria extends AppCompatActivity {
     // Components
     Button backPage, nextPage, goBackToHome;
     ImageView ivCurrentview;
-    TextView titleChapter, tvCurrentPage;
+    TextView titleChapter, tvCurrentPage, tvTheEnd;
 
     // History data
     private String historyId;
@@ -45,6 +45,7 @@ public class LeituraHistoria extends AppCompatActivity {
 
     // Page data
     private ArrayList<String> pages;
+    private Map<String, Object> escolha;
     private boolean stateOpacityMin;
     private int currentPage;
 
@@ -67,6 +68,7 @@ public class LeituraHistoria extends AppCompatActivity {
         ivCurrentview = findViewById(R.id.ivCurrentview);
         nextPage = findViewById(R.id.nextPage);
         tvCurrentPage = findViewById(R.id.tvCurrentPage);
+        tvTheEnd = findViewById(R.id.tvTheEnd);
         goBackToHome = findViewById(R.id.goBackToHome);
 
         // Get intent data
@@ -81,6 +83,7 @@ public class LeituraHistoria extends AppCompatActivity {
         stateOpacityMin = false;
         currentPage = 0;
         pages = new ArrayList<>();
+        escolha = null;
         titleChapter.setText(historyName + ": " + chaptername);
 
         // Get history from historic reads
@@ -88,6 +91,8 @@ public class LeituraHistoria extends AppCompatActivity {
         documentReference = firestore.document("usuarios/" + currentUser.getUid() + "/historicoAtividade/" + historyId + "_" + chapterId);
 
         getHistoryActivities();
+
+        backPage.setVisibility(View.GONE);
 
         // Listeners
         ivCurrentview.setOnTouchListener((click, event) -> {
@@ -104,6 +109,7 @@ public class LeituraHistoria extends AppCompatActivity {
 
                     if (documentSnapshot.get("id") == null) {
                         createHistoric(historicOfReadKey);
+                        getHistoryActivities();
                     } else {
                         ((List<String>) documentSnapshot.get("grupos"))
                                 .forEach(grupo -> {
@@ -122,9 +128,6 @@ public class LeituraHistoria extends AppCompatActivity {
         historicOfRead.put("grupos", Arrays.asList(initialChapterGroup));
 
         documentReference.set(historicOfRead)
-                .addOnSuccessListener(s -> {
-                    getPages(initialChapterGroup);
-                })
                 .addOnFailureListener(e -> {
                     Toast.makeText(LeituraHistoria.this, "Erro ao salvar historico de leitura!", Toast.LENGTH_LONG).show();
                     IntentManager.finish(LeituraHistoria.this);
@@ -138,10 +141,15 @@ public class LeituraHistoria extends AppCompatActivity {
                         pages.add(pagina);
                     });
 
+                    if (documentSnapshot.get("temEscolha") != null) {
+                        escolha = (Map<String, Object>) documentSnapshot.get("escolha");
+                    }
+
                     if (pages.size() > 0) {
                         tvCurrentPage.setText(1 + "/" + pages.size());
                         ImageManager.carregarImagemFirestoreEmImageViewPorUrl(storage, pages.get(0), ivCurrentview, LeituraHistoria.this);
                     } else {
+                        nextPage.setVisibility(View.GONE);
                         openEndOfChapter();
                     }
 
@@ -157,27 +165,25 @@ public class LeituraHistoria extends AppCompatActivity {
     }
 
     // Content Managers
-    private void changeContent() {
-        boolean imageVisibilityGone = false;
-        boolean hasQuest = false;
+    private void changeState () {
+        if (!hasNextPage() && hasPendingQuest()) {
 
-        if (hasNextPage()) {
-            if (imageVisibilityGone) {
-                // TODO: imagem.setVisibility.OPEN
-            }
-            // TODO: imagem.resetContent
-            // TODO: imagem.putNewContent
-        } else if (hasQuest) {
-            // TODO: imagem.setVisibility.GONE
-            // TODO: quest.setVisibility.OPEN
+        } else if (!hasNextPage()) {
+            openEndOfChapter();
         } else {
-            // TODO: fim.setVisibility.visible
+            if (tvTheEnd.getVisibility() == View.VISIBLE) {
+                tvTheEnd.setVisibility(View.GONE);
+            }
+            if (ivCurrentview.getVisibility() == View.GONE) {
+                ivCurrentview.setVisibility(View.VISIBLE);
+            }
         }
     }
 
     private void openEndOfChapter() {
-        // TODO: hideimage
-        // TODO: open END TEXT
+        ivCurrentview.setVisibility(View.GONE);
+        nextPage.setVisibility(View.GONE);
+        tvTheEnd.setVisibility(View.VISIBLE);
     }
 
     public void selecionarOpcao(View view) {
@@ -188,8 +194,16 @@ public class LeituraHistoria extends AppCompatActivity {
     }
 
     // State Helpers
-    private boolean hasNextPage() {
-        return currentPage == pages.size() - 1;
+    private boolean hasNextPage () {
+        return currentPage != pages.size() - 1;
+    }
+
+    private boolean hasPreviusPage () {
+        return currentPage > 0;
+    }
+
+    private boolean hasPendingQuest () {
+        return escolha != null;
     }
 
     public void setCurrentPage(int currentPage) {
@@ -199,20 +213,31 @@ public class LeituraHistoria extends AppCompatActivity {
 
     // Called from activity
     public void goToNextPage(View view) {
-        if (currentPage == pages.size() - 1) return;
+        if (backPage.getVisibility() == View.GONE) {
+            backPage.setVisibility(View.VISIBLE);
+        }
+        if (currentPage == pages.size()) {
+            nextPage.setVisibility(View.GONE);
+        }
 
+        changeState();
+        if (!hasNextPage()) return;
         setCurrentPage(currentPage + 1);
         ImageManager.carregarImagemFirestoreEmImageViewPorUrl(storage, pages.get(currentPage), ivCurrentview, LeituraHistoria.this);
-        changeContent();
     }
 
     public void goToPreviusPage(View view) {
-        if (currentPage == 0) return;
+        if (nextPage.getVisibility() == View.GONE) {
+            nextPage.setVisibility(View.VISIBLE);
+        }
+        if (currentPage == 1) {
+            backPage.setVisibility(View.GONE);
+        }
 
+        changeState();
+        if (!hasPreviusPage()) return;
         setCurrentPage(currentPage - 1);
         ImageManager.carregarImagemFirestoreEmImageViewPorUrl(storage, pages.get(currentPage), ivCurrentview, LeituraHistoria.this);
-        changeContent();
-
     }
 
     public void setGoBackToChapters(View view) {
