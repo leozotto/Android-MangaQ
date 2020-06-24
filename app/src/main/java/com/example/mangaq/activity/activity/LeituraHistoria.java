@@ -85,7 +85,7 @@ public class LeituraHistoria extends AppCompatActivity {
 
         // Get history from historic reads
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        documentReference = firestore.document("usuarios/" + currentUser.getUid() + "/historicoAtividade/leituras");
+        documentReference = firestore.document("usuarios/" + currentUser.getUid() + "/historicoAtividade/" + historyId + "_" + chapterId);
 
         getHistoryActivities();
 
@@ -102,7 +102,7 @@ public class LeituraHistoria extends AppCompatActivity {
                 .addOnSuccessListener(documentSnapshot -> {
                     String historicOfReadKey = historyId + "_" + chapterId;
 
-                    if (documentSnapshot.get("id") == historicOfReadKey) {
+                    if (documentSnapshot.get("id") == null) {
                         createHistoric(historicOfReadKey);
                     } else {
                         ((List<String>) documentSnapshot.get("grupos"))
