@@ -5,18 +5,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.mangaq.R;
 import com.example.mangaq.activity.util.IntentManager;
 import com.example.mangaq.activity.util.ToolbarConfig;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,21 +62,22 @@ public class PerfilActivity extends AppCompatActivity {
         String idade = editIdade.getText().toString();
         String endereco = editEndereco.getText().toString();
 
-        Map<String,Object> dadosUsuario = new HashMap<>();
+        Map<String, Object> dadosUsuario = new HashMap<>();
 
-        dadosUsuario.put("nome",nome);
-        dadosUsuario.put("sobrenome",sobrenome);
-        dadosUsuario.put("apelido",apelido);
-        dadosUsuario.put("idade",idade);
-        dadosUsuario.put("endereço",endereco);
+        dadosUsuario.put("nome", nome);
+        dadosUsuario.put("sobrenome", sobrenome);
+        dadosUsuario.put("apelido", apelido);
+        dadosUsuario.put("idade", idade);
+        dadosUsuario.put("endereço", endereco);
 
         db.collection("usuarios").document(user.getUid())
                 .set(dadosUsuario)
+
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         String message = "Dados Cadastrados com Sucesso!";
-                        Toast.makeText(PerfilActivity.this,message,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PerfilActivity.this, message, Toast.LENGTH_SHORT).show();
                         IntentManager.goTo(PerfilActivity.this, PerfilActivity.class);
                     }
                 })
@@ -81,8 +85,32 @@ public class PerfilActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         String message = "Falha ao Cadastrar Dados!";
-                        Toast.makeText(PerfilActivity.this,message,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PerfilActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
+
                 });
+
+        }
+
+        public void carregarDados(View view){
+            CollectionReference pessoas = db.collection("exemplo");
+            pessoas.get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()){
+                        String resultado = "";
+                        for(QueryDocumentSnapshot document : task.getResult()){
+                           resultado += document.getData().toString() +'\n';
+
+                        }
+                        //textResultado(resultado);
+                    }
+                }
+            });
+        }
+
+    public void deletarPerfil(View view) {
+
     }
 }
