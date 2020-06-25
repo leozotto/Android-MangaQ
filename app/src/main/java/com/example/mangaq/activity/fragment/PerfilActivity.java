@@ -144,6 +144,5 @@ public class PerfilActivity extends AppCompatActivity {
     public void deletarPerfil(View view) {
         Intent menuPrincipal = new Intent(PerfilActivity.this, MainActivity.class);
         startActivity(menuPrincipal);
-        //finish();
     }
 }
