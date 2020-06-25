@@ -3,8 +3,12 @@ package com.example.mangaq.activity.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,35 +20,37 @@ import com.example.mangaq.activity.util.IntentManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class LeituraHistoria extends AppCompatActivity {
     // Firebase
     private FirebaseFirestore firestore;
-    private FirebaseAuth firebaseAuth;
     private FirebaseStorage storage;
 
     // Components
     Button backPage, nextPage, goBackToHome;
     ImageView ivCurrentview;
     TextView titleChapter, tvCurrentPage, tvTheEnd;
+    TextView tvTitleChoice;
+    LinearLayout choicesForm;
+    ListView lvOptionsList;
 
     // History data
     private String historyId;
-    private String historyName;
     private String chapterId;
-    private String chaptername;
-    private String initialChapterGroup;
+    private DocumentReference initialChapterGroup;
 
     // Page data
-    private ArrayList<String> pages;
+    private LinkedList<String> pages;
     private Map<String, Object> escolha;
     private boolean stateOpacityMin;
     private int currentPage;
@@ -60,7 +66,7 @@ public class LeituraHistoria extends AppCompatActivity {
         // Load firestore instances
         firestore = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         // Bind Components
         titleChapter = findViewById(R.id.titleChapter);
@@ -70,19 +76,22 @@ public class LeituraHistoria extends AppCompatActivity {
         tvCurrentPage = findViewById(R.id.tvCurrentPage);
         tvTheEnd = findViewById(R.id.tvTheEnd);
         goBackToHome = findViewById(R.id.goBackToHome);
+        choicesForm = findViewById(R.id.choicesForm);
+        tvTitleChoice = findViewById(R.id.tvTitleChoice);
+        lvOptionsList = findViewById(R.id.lvOptionsList);
 
         // Get intent data
         Intent intent = getIntent();
         historyId = intent.getBundleExtra("bundleExtra").getString("historyId");
-        historyName = intent.getBundleExtra("bundleExtra").getString("historyName");
+        String historyName = intent.getBundleExtra("bundleExtra").getString("historyName");
         chapterId = intent.getBundleExtra("bundleExtra").getString("chapterId");
-        chaptername = intent.getBundleExtra("bundleExtra").getString("chapterName");
-        initialChapterGroup = intent.getBundleExtra("bundleExtra").getString("initialChapterGroup");
+        String chaptername = intent.getBundleExtra("bundleExtra").getString("chapterName");
+        initialChapterGroup = firestore.document(intent.getBundleExtra("bundleExtra").getString("initialChapterGroup"));
 
         // Initialize State Data
         stateOpacityMin = false;
         currentPage = 0;
-        pages = new ArrayList<>();
+        pages = new LinkedList<>();
         escolha = null;
         titleChapter.setText(historyName + ": " + chaptername);
 
@@ -111,7 +120,7 @@ public class LeituraHistoria extends AppCompatActivity {
                         createHistoric(historicOfReadKey);
                         getHistoryActivities();
                     } else {
-                        ((List<String>) documentSnapshot.get("grupos"))
+                        ((ArrayList<DocumentReference>) documentSnapshot.get("grupos"))
                                 .forEach(grupo -> {
                                     getPages(grupo);
                                 });
@@ -134,40 +143,43 @@ public class LeituraHistoria extends AppCompatActivity {
                 });
     }
 
-    private void getPages(String grupo) {
-        firestore.document(grupo).get()
-                .addOnSuccessListener(documentSnapshot -> {
+    private void getPages(DocumentReference groupReference) {
+        groupReference.get().
+                addOnSuccessListener(documentSnapshot -> {
                     ((List<String>) documentSnapshot.get("paginas")).forEach(pagina -> {
                         pages.add(pagina);
                     });
 
-                    if (documentSnapshot.get("temEscolha") != null) {
-                        escolha = (Map<String, Object>) documentSnapshot.get("escolha");
+                    if (documentSnapshot.get("temEscolha") != null && documentSnapshot.getBoolean("temEscolha")) {
+                        escolha = (Map<String, Object>) documentSnapshot.get("escolhas");
+                    } else {
+                        escolha = null;
                     }
 
                     if (pages.size() > 0) {
-                        tvCurrentPage.setText(1 + "/" + pages.size());
-                        ImageManager.carregarImagemFirestoreEmImageViewPorUrl(storage, pages.get(0), ivCurrentview, LeituraHistoria.this);
+                        tvCurrentPage.setText(currentPage + "/" + pages.size());
+                        ImageManager.carregarImagemFirestoreEmImageViewPorUrl(storage, pages.get(currentPage), ivCurrentview, LeituraHistoria.this);
                     } else {
                         nextPage.setVisibility(View.GONE);
                         openEndOfChapter();
                     }
 
-                    String nextGroup = documentSnapshot.getString("proximoGrupo");
+                    DocumentReference nextGroup = documentSnapshot.getDocumentReference("proximoGrupo");
                     if (nextGroup != null) {
+
                         getPages(nextGroup);
                     }
-
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(LeituraHistoria.this, "Erro ao buscar grupos!", Toast.LENGTH_LONG).show();
                 });
     }
-
     // Content Managers
-    private void changeState () {
-        if (!hasNextPage() && hasPendingQuest()) {
-
+    private void changeState() {
+        if (hasPendingQuest() && !hasNextPage()) {
+            openQuestContent();
+        } else if ((!hasNextPage() && hasPendingQuest()) && choicesForm.getVisibility() == View.VISIBLE) {
+            choicesForm.setVisibility(View.GONE);
         } else if (!hasNextPage()) {
             openEndOfChapter();
         } else {
@@ -180,29 +192,71 @@ public class LeituraHistoria extends AppCompatActivity {
         }
     }
 
+    private void openQuestContent() {
+        ivCurrentview.setVisibility(View.GONE);
+        backPage.setVisibility(View.GONE);
+        nextPage.setVisibility(View.GONE);
+
+        tvTitleChoice.setText(escolha.get("titulo").toString());
+
+        ArrayList<String> values = new ArrayList<>();
+        ArrayList<HashMap<String, Object>> options = (ArrayList<HashMap<String, Object>>) escolha.get("opcoes");
+
+        options.forEach(o -> {
+            values.add(o.get("nome").toString());
+        });
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+
+        lvOptionsList.setAdapter(adapter);
+
+        lvOptionsList.setOnItemClickListener(
+                (AdapterView<?> parent, View view, int position, long id) -> {
+                    onMakeChoice(options.get(position));
+                });
+
+        choicesForm.setVisibility(View.VISIBLE);
+    }
+
     private void openEndOfChapter() {
         ivCurrentview.setVisibility(View.GONE);
         nextPage.setVisibility(View.GONE);
         tvTheEnd.setVisibility(View.VISIBLE);
     }
 
-    public void selecionarOpcao(View view) {
-        System.out.println("oi");
-        // TODO: adicionar grupoAlvo no historico de leitura
-        // TODO: Atualizar hasQuest
-        // TODO: carregar grupoAlvo na lista de paginas
+    public void onMakeChoice(HashMap<String, Object> selectedChoice) {
+        escolha = null;
+        DocumentReference targeGroupReference = (DocumentReference) selectedChoice.get("grupoAlvo");
+
+        this.addGroupIntoHistoric(targeGroupReference);
+
+        this.getPages(targeGroupReference);
+
+        this.nextTick();
+    }
+
+    private void nextTick() {
+        this.goToNextPage(null);
+        ivCurrentview.setVisibility(View.VISIBLE);
+        backPage.setVisibility(View.VISIBLE);
+        nextPage.setVisibility(View.VISIBLE);
+        choicesForm.setVisibility(View.GONE);
+    }
+
+    private void addGroupIntoHistoric(DocumentReference targeGroupReference) {
+        documentReference.update("grupos", FieldValue.arrayUnion(targeGroupReference));
     }
 
     // State Helpers
-    private boolean hasNextPage () {
-        return currentPage != pages.size() - 1;
+    private boolean hasNextPage() {
+        return currentPage != (pages.size() - 1);
     }
 
-    private boolean hasPreviusPage () {
+    private boolean hasPreviusPage() {
         return currentPage > 0;
     }
 
-    private boolean hasPendingQuest () {
+    private boolean hasPendingQuest() {
         return escolha != null;
     }
 
