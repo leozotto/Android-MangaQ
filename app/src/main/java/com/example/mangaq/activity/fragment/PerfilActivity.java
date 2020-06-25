@@ -3,11 +3,14 @@ package com.example.mangaq.activity.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.mangaq.R;
+import com.example.mangaq.activity.activity.MainActivity;
+import com.example.mangaq.activity.model.Usuario;
 import com.example.mangaq.activity.util.IntentManager;
 import com.example.mangaq.activity.util.ToolbarConfig;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,13 +24,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PerfilActivity extends AppCompatActivity {
     private EditText editNome, editSobrenome, editEndereco, editApelido, editIdade;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+
+    private List<Usuario> listPessoa = new ArrayList<Usuario>();
+    private ArrayAdapter<Usuario> arrayAdapterPessoa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +59,13 @@ public class PerfilActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         db = FirebaseFirestore.getInstance();
+        carregarDados(null);
+
     }
 
     public void salvarPerfil(View view) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String id = user.getUid();
         String nome = editNome.getText().toString();
         String sobrenome = editSobrenome.getText().toString();
         String apelido = editApelido.getText().toString();
@@ -64,11 +74,12 @@ public class PerfilActivity extends AppCompatActivity {
 
         Map<String, Object> dadosUsuario = new HashMap<>();
 
+        dadosUsuario.put("id",id);
         dadosUsuario.put("nome", nome);
         dadosUsuario.put("sobrenome", sobrenome);
         dadosUsuario.put("apelido", apelido);
         dadosUsuario.put("idade", idade);
-        dadosUsuario.put("endereço", endereco);
+        dadosUsuario.put("endereco", endereco);
 
         db.collection("usuarios").document(user.getUid())
                 .set(dadosUsuario)
@@ -93,24 +104,46 @@ public class PerfilActivity extends AppCompatActivity {
         }
 
         public void carregarDados(View view){
-            CollectionReference pessoas = db.collection("exemplo");
-            pessoas.get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if(task.isSuccessful()){
-                        String resultado = "";
-                        for(QueryDocumentSnapshot document : task.getResult()){
-                           resultado += document.getData().toString() +'\n';
+            CollectionReference usuarios = db.collection("usuarios");
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String id = user.getUid();
 
+            usuarios.whereEqualTo("id",id)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()){
+                                List<Usuario> listUsuario = new ArrayList<>();
+                                for(QueryDocumentSnapshot document : task.getResult()){
+                                    listUsuario.add(document.toObject(Usuario.class));
+                                }
+                                String nome ="";
+                                String sobrenome ="";
+                                String apelido ="";
+                                String idade = "";
+                                String endereco ="";
+
+                                for(Usuario u : listUsuario){
+                                    nome = u.getNome();
+                                    sobrenome = u.getSobrenome();
+                                    apelido = u.getApelido();
+                                    idade = u.getIdade();
+                                    endereco = u.getEndereco();
+                                }
+                                editNome.setText(nome);
+                                editSobrenome.setText(sobrenome);
+                                editApelido.setText(apelido);
+                                editIdade.setText(idade);
+                                editEndereco.setText(endereco);
+                            }
                         }
-                        //textResultado(resultado);
-                    }
-                }
-            });
+                    });
         }
 
     public void deletarPerfil(View view) {
-
+        Intent menuPrincipal = new Intent(PerfilActivity.this, MainActivity.class);
+        startActivity(menuPrincipal);
+        //finish();
     }
 }

@@ -8,17 +8,25 @@ public class Usuario {
     private String senha;
     private String apelido;
     private String endereco;
-    private int idade;
+    private String idade;
 
     public Usuario() {
 
     }
 
-    public Usuario(String nome, String sobrenome, String apelido, String endereco, int idade) {
+    public Usuario(String nome, String sobrenome, String apelido, String endereco, String idade) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.apelido = apelido;
         this.endereco = endereco;
+        this.idade = idade;
+    }
+
+    public String getIdade() {
+        return idade;
+    }
+
+    public void setIdade(String idade) {
         this.idade = idade;
     }
 
@@ -30,13 +38,7 @@ public class Usuario {
         this.id = id;
     }
 
-    public int getIdade() {
-        return idade;
-    }
 
-    public void setIdade(int idade) {
-        this.idade = idade;
-    }
 
     public String getApelido() {
         return apelido;
@@ -53,7 +55,6 @@ public class Usuario {
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
-
 
     public void setSobrenome(String sobrenome) {
         this.sobrenome = sobrenome;
