@@ -39,14 +39,40 @@
         android:layout_width="410dp"
         android:layout_height="wrap_content"
         android:text="Fim"
-        android:visibility="gone"
-        android:textSize="200sp"
         android:textAlignment="center"
+        android:textSize="200sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/nextPage"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toEndOf="@+id/backPage"
         app:layout_constraintTop_toBottomOf="@+id/titleChapter" />
+
+    <LinearLayout
+        android:id="@+id/choicesForm"
+        android:layout_width="410dp"
+        android:layout_height="781dp"
+        android:orientation="vertical"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/nextPage"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toEndOf="@+id/backPage"
+        app:layout_constraintTop_toBottomOf="@+id/titleChapter">
+
+        <TextView
+            android:id="@+id/tvTitleChoice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:textAlignment="center"
+            android:textSize="35sp" />
+        <ListView
+            android:id="@+id/lvOptionsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/ivCurrentview"
