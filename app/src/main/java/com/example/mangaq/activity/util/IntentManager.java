@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.mangaq.activity.activity.Capitulos;
-import com.example.mangaq.activity.activity.MainActivity;
-
 public class IntentManager {
     public static void goTo (Activity activity, Class targetActivityClass) {
         Intent intent = new Intent(activity, targetActivityClass);

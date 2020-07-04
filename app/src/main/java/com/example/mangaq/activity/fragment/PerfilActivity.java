@@ -1,6 +1,5 @@
 package com.example.mangaq.activity.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -9,7 +8,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.mangaq.R;
-import com.example.mangaq.activity.activity.MainActivity;
 import com.example.mangaq.activity.model.Usuario;
 import com.example.mangaq.activity.util.IntentManager;
 import com.example.mangaq.activity.util.ToolbarConfig;
@@ -140,9 +138,4 @@ public class PerfilActivity extends AppCompatActivity {
                         }
                     });
         }
-
-    public void deletarPerfil(View view) {
-        Intent menuPrincipal = new Intent(PerfilActivity.this, MainActivity.class);
-        startActivity(menuPrincipal);
-    }
-}
+ }

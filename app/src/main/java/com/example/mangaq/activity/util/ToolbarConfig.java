@@ -1,14 +1,13 @@
 package com.example.mangaq.activity.util;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 
 import com.example.mangaq.R;
-import com.example.mangaq.activity.activity.MainActivity;
+import com.example.mangaq.activity.fragment.MainActivity;
 import com.example.mangaq.activity.fragment.FavoritosActivity;
 import com.example.mangaq.activity.fragment.PerfilActivity;
 import com.example.mangaq.activity.fragment.PesquisaActivity;
@@ -19,12 +18,6 @@ public class ToolbarConfig {
 
     public void configuraBottomNavigationView(Activity activity) {
         BottomNavigationViewEx bottomNavigationViewEx = activity.findViewById(R.id.bottomNavigation);
-        //configuracao bottom nav(animacao)
-//        bottomNavigationViewEx.enableAnimation(true);
-//        bottomNavigationViewEx.enableItemShiftingMode(true);
-//        bottomNavigationViewEx.enableShiftingMode(false);
-//        bottomNavigationViewEx.setTextVisibility(true);
-
         //navegacao
         habilitarNavigation(activity, bottomNavigationViewEx);
 
@@ -44,9 +37,9 @@ public class ToolbarConfig {
                     case R.id.ic_home:
                         IntentManager.goTo(activity, MainActivity.class);
                         return true;
-                    case R.id.ic_pesquisa:
-                        IntentManager.goTo(activity, PesquisaActivity.class);
-                        return true;
+//                    case R.id.ic_pesquisa:
+//                        IntentManager.goTo(activity, PesquisaActivity.class);
+//                        return true;
                     case R.id.ic_favoritos:
                         IntentManager.goTo(activity, FavoritosActivity.class);
                         return true;

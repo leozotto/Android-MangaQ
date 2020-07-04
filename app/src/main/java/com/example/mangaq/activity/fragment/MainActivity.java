@@ -1,4 +1,4 @@
-package com.example.mangaq.activity.activity;
+package com.example.mangaq.activity.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mangaq.R;
+import com.example.mangaq.activity.activity.Capitulos;
+import com.example.mangaq.activity.activity.LoginActivity;
 import com.example.mangaq.activity.helper.ConfiguracaoFirebase;
 import com.example.mangaq.activity.holder.HistoryHolder;
 import com.example.mangaq.activity.model.History;
@@ -31,8 +33,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth autenticacao;
