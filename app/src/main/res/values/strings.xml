@@ -10,4 +10,6 @@
     <string name="__">-</string>
     <string name="_0_0">0/0</string>
     <string name="_x">X</string>
+    <string name="favoritos">Favoritos</string>
+    <string name="ex_one_piece">Ex: One piece</string>
 </resources>
