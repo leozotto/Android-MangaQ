@@ -33,6 +33,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth autenticacao;
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         historyList.setLayoutManager(linearLayoutManager);
-        buscarListaHistorias();
+        getHistoryList();
     }
 
     @Override
@@ -96,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void buscarListaHistorias() {
+    private void getHistoryList() {
         Query query = firestore.collection("historias");
 
         FirestoreRecyclerOptions<History> response = new FirestoreRecyclerOptions.Builder<History>()
@@ -108,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
             public void onBindViewHolder(@NonNull HistoryHolder holder, int position, @NonNull History historia) {
                 holder.getTvNome().setText(historia.getNome());
 
-                // TODO: Criar index no firebase para nao precisar usar isso:
                 FirebaseFirestore
                         .getInstance()
                         .collection("usuarios")
@@ -126,12 +127,42 @@ public class MainActivity extends AppCompatActivity {
                 ImageManager.carregarImagemFirestoreEmImageViewPorUrl(storage, historia.getCapa(), holder.getImageView(), MainActivity.this);
 
                 holder.itemView.setOnClickListener(v -> abreCapitulos(historia));
+
+                FirebaseFirestore
+                        .getInstance()
+                        .collection("usuarios")
+                        .document(autenticacao.getCurrentUser().getUid())
+                        .collection("favoritos")
+                        .document(historia.getId())
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.getData() != null) {
+                                holder.getIvNaoFavorito().setVisibility(View.GONE);
+                                holder.getIvFavorito().setVisibility(View.VISIBLE);
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(getApplicationContext(), "Falha ao carregar dados", Toast.LENGTH_SHORT).show();
+                        });
+
+                holder.getIvFavorito().setOnTouchListener((click, event) -> {
+                    unmarkAsFavorite(historia.getId());
+                    holder.getIvFavorito().setVisibility(View.GONE);
+                    holder.getIvNaoFavorito().setVisibility(View.VISIBLE);
+                    return true;
+                });
+
+                holder.getIvNaoFavorito().setOnTouchListener((click, event) -> {
+                    markAsFavorite(historia.getId());
+                    holder.getIvNaoFavorito().setVisibility(View.GONE);
+                    holder.getIvFavorito().setVisibility(View.VISIBLE);
+                    return true;
+                });
             }
 
             @Override
             public HistoryHolder onCreateViewHolder(ViewGroup group, int i) {
-                View view = LayoutInflater.from(group.getContext())
-                        .inflate(R.layout.list_item, group, false);
+                View view = LayoutInflater.from(group.getContext()).inflate(R.layout.list_item, group, false);
 
                 return new HistoryHolder(view);
             }
@@ -144,6 +175,37 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.notifyDataSetChanged();
         historyList.setAdapter(adapter);
+    }
+
+    private void markAsFavorite(String historyId) {
+        Map<String, Object> historyDocument = new HashMap<>();
+        historyDocument.put("id", historyId);
+
+        FirebaseFirestore
+                .getInstance()
+                .collection("usuarios")
+                .document(autenticacao.getCurrentUser().getUid())
+                .collection("favoritos")
+                .document(historyId)
+                .set(historyDocument)
+                .addOnFailureListener(e -> {
+                    Toast.makeText(MainActivity.this, "Erro ao marcar como favorito!", Toast.LENGTH_LONG).show();
+                    IntentManager.finish(MainActivity.this);
+                });
+    }
+
+    private void unmarkAsFavorite(String historyId) {
+        FirebaseFirestore
+                .getInstance()
+                .collection("usuarios")
+                .document(autenticacao.getCurrentUser().getUid())
+                .collection("favoritos")
+                .document(historyId)
+                .delete()
+                .addOnFailureListener(e -> {
+                    Toast.makeText(MainActivity.this, "Erro ao desmarcar como favorito!", Toast.LENGTH_LONG).show();
+                    IntentManager.finish(MainActivity.this);
+                });
     }
 
     private void abreCapitulos(History historia) {

@@ -99,7 +99,7 @@ public class LeituraHistoria extends AppCompatActivity {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         documentReference = firestore.document("usuarios/" + currentUser.getUid() + "/historicoAtividade/" + historyId + "_" + chapterId);
 
-        getHistoryActivities();
+        getHistoryContent();
 
         backPage.setVisibility(View.GONE);
 
@@ -111,14 +111,14 @@ public class LeituraHistoria extends AppCompatActivity {
     }
 
     // load data
-    private void getHistoryActivities() {
+    private void getHistoryContent() {
         documentReference.get()
                 .addOnSuccessListener(documentSnapshot -> {
-                    String historicOfReadKey = historyId + "_" + chapterId;
+                    String historicKey = historyId + "_" + chapterId;
 
                     if (documentSnapshot.get("id") == null) {
-                        createHistoric(historicOfReadKey);
-                        getHistoryActivities();
+                        createHistoric(historicKey);
+                        getHistoryContent();
                     } else {
                         ((ArrayList<DocumentReference>) documentSnapshot.get("grupos"))
                                 .forEach(grupo -> {
@@ -131,9 +131,9 @@ public class LeituraHistoria extends AppCompatActivity {
                 });
     }
 
-    private void createHistoric(String historicOfReadKey) {
+    private void createHistoric(String historicKey) {
         Map<String, Object> historicOfRead = new HashMap<>();
-        historicOfRead.put("id", historicOfReadKey);
+        historicOfRead.put("id", historicKey);
         historicOfRead.put("grupos", Arrays.asList(initialChapterGroup));
 
         documentReference.set(historicOfRead)
