@@ -1,26 +1,20 @@
 package com.example.mangaq.activity.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mangaq.R;
+import com.example.mangaq.activity.activity.Capitulos;
 import com.example.mangaq.activity.helper.ConfiguracaoFirebase;
 import com.example.mangaq.activity.holder.HistoryHolder;
 import com.example.mangaq.activity.model.History;
@@ -35,25 +29,29 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 
-import org.w3c.dom.Text;
+import java.util.HashMap;
+import java.util.Map;
+import com.jakewharton.rxbinding4.widget.RxSearchView;
 
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 public class PesquisaActivity extends AppCompatActivity {
-    private FirebaseAuth autenticacao;
     private FirebaseFirestore firestore;
-    EditText listPesquisa;
+    private FirebaseAuth autenticacao;
+    private FirebaseStorage storage;
 
-    FirebaseStorage storage;
-    RecyclerView historyList;
+    private LinearLayoutManager linearLayoutManager;
     private FirestoreRecyclerAdapter adapter;
-    LinearLayoutManager linearLayoutManager;
+    private RecyclerView historyList;
+
+    private SearchView searchView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pesquisa);
-        listPesquisa = findViewById(R.id.listPesquisa);
 
         //conf de objetos
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
@@ -65,49 +63,43 @@ public class PesquisaActivity extends AppCompatActivity {
         ToolbarConfig toolbarConfig = new ToolbarConfig();
         toolbarConfig.configuraBottomNavigationView(PesquisaActivity.this);
 
-        historyList = findViewById(R.id.historyList);
+        historyList = findViewById(R.id.recyclerViewSearch);
+        searchView = findViewById(R.id.searchView);
 
         linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         historyList.setLayoutManager(linearLayoutManager);
-        eventoEdit();
-        buscarListaHistorias("O");
+
+        RxSearchView.queryTextChanges(searchView)
+                .debounce(750, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(charSequence -> {
+                    searchHistoryList(charSequence);
+                });
     }
 
+    private void searchHistoryList(CharSequence charSequence) {
+        String search = charSequence.toString().toUpperCase();
 
-    private void eventoEdit() {
-        listPesquisa.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String palavra = listPesquisa.getText().toString().trim();
-                buscarListaHistorias(palavra);
-            }
-
-        });
+        if (adapter == null) {
+            loadAdapter(search);
+        } else {
+            reloadAdapter(search);
+        }
     }
 
-    private void buscarListaHistorias(String palavra) {
-        boolean reloadAdapter = adapter!=null;
-        Query query = firestore.collection("historias").orderBy("nome").startAt("!").endAt("SUBSTRING\uf8ff");
+    private void loadAdapter(String search) {
+        Query query = firestore
+                .collection("historias")
+                .orderBy("NOME")
+                .limitToLast(20);
 
         FirestoreRecyclerOptions<History> response = new FirestoreRecyclerOptions.Builder<History>()
                 .setQuery(query, History.class)
                 .build();
 
         adapter = new FirestoreRecyclerAdapter<History, HistoryHolder>(response) {
-
             @Override
             public void onBindViewHolder(@NonNull HistoryHolder holder, int position, @NonNull History historia) {
-                System.out.println("AQUI");
                 holder.getTvNome().setText(historia.getNome());
 
                 FirebaseFirestore
@@ -126,13 +118,43 @@ public class PesquisaActivity extends AppCompatActivity {
                 holder.getDataCriacao().setText(historia.getDataCriacaoFormatada());
                 ImageManager.carregarImagemFirestoreEmImageViewPorUrl(storage, historia.getCapa(), holder.getImageView(), PesquisaActivity.this);
 
+                holder.itemView.setOnClickListener(v -> abreCapitulos(historia));
+
+                FirebaseFirestore
+                        .getInstance()
+                        .collection("usuarios")
+                        .document(autenticacao.getCurrentUser().getUid())
+                        .collection("favoritos")
+                        .document(historia.getId())
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.getData() != null) {
+                                holder.getIvNaoFavorito().setVisibility(View.GONE);
+                                holder.getIvFavorito().setVisibility(View.VISIBLE);
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(getApplicationContext(), "Falha ao carregar dados", Toast.LENGTH_SHORT).show();
+                        });
+
+                holder.getIvFavorito().setOnTouchListener((click, event) -> {
+                    unmarkAsFavorite(historia.getId());
+                    holder.getIvFavorito().setVisibility(View.GONE);
+                    holder.getIvNaoFavorito().setVisibility(View.VISIBLE);
+                    return true;
+                });
+
+                holder.getIvNaoFavorito().setOnTouchListener((click, event) -> {
+                    markAsFavorite(historia.getId());
+                    holder.getIvNaoFavorito().setVisibility(View.GONE);
+                    holder.getIvFavorito().setVisibility(View.VISIBLE);
+                    return true;
+                });
             }
 
             @Override
             public HistoryHolder onCreateViewHolder(ViewGroup group, int i) {
-                View view = LayoutInflater.from(group.getContext())
-                        .inflate(R.layout.list_item, group, false);
-                System.out.println("oncreateviewholder");
+                View view = LayoutInflater.from(group.getContext()).inflate(R.layout.list_item, group, false);
 
                 return new HistoryHolder(view);
             }
@@ -143,40 +165,70 @@ public class PesquisaActivity extends AppCompatActivity {
             }
         };
 
+        adapter.notifyDataSetChanged();
+        historyList.setAdapter(adapter);
 
-
-        if(reloadAdapter){
-            historyList.setVisibility(View.GONE);
-            historyList.setAdapter(null);
-            historyList.setLayoutManager(null);
-            historyList.setAdapter(adapter);
-            historyList.setLayoutManager(linearLayoutManager);
-            historyList.getLayoutManager().removeAllViews();
-            historyList.getRecycledViewPool().clear();
-            adapter.notifyDataSetChanged();
-//            historyList.swapAdapter(adapter,false);
-//            historyList.setLayoutManager(linearLayoutManager);
-//            adapter.notifyDataSetChanged();
-            historyList.setVisibility(View.VISIBLE);
-            System.out.println("entrou no if");
-        }else{
-            adapter.notifyDataSetChanged();
-            historyList.setAdapter(adapter);
-        }
+        adapter.startListening();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapter.startListening();
+    private void reloadAdapter(String search) {
+        Query query = firestore
+                .collection("historias")
+                .orderBy("NOME")
+                .startAt(search)
+                .endAt(search + "\uf8ff")
+                .limitToLast(20);
 
+        FirestoreRecyclerOptions<History> response = new FirestoreRecyclerOptions.Builder<History>()
+                .setQuery(query, History.class)
+                .build();
+
+        // Change options of adapter.
+        adapter.updateOptions(response);
+    }
+
+    private void markAsFavorite(String historyId) {
+        Map<String, Object> historyDocument = new HashMap<>();
+        historyDocument.put("id", historyId);
+
+        FirebaseFirestore
+                .getInstance()
+                .collection("usuarios")
+                .document(autenticacao.getCurrentUser().getUid())
+                .collection("favoritos")
+                .document(historyId)
+                .set(historyDocument)
+                .addOnFailureListener(e -> {
+                    Toast.makeText(PesquisaActivity.this, "Erro ao marcar como favorito!", Toast.LENGTH_LONG).show();
+                    IntentManager.finish(PesquisaActivity.this);
+                });
+    }
+
+    private void unmarkAsFavorite(String historyId) {
+        FirebaseFirestore
+                .getInstance()
+                .collection("usuarios")
+                .document(autenticacao.getCurrentUser().getUid())
+                .collection("favoritos")
+                .document(historyId)
+                .delete()
+                .addOnFailureListener(e -> {
+                    Toast.makeText(PesquisaActivity.this, "Erro ao desmarcar como favorito!", Toast.LENGTH_LONG).show();
+                    IntentManager.finish(PesquisaActivity.this);
+                });
+    }
+
+    private void abreCapitulos(History historia) {
+        Bundle bundle = new Bundle();
+        bundle.putString("historyId", historia.getId());
+        bundle.putString("historyName", historia.getNome());
+
+        IntentManager.goTo(PesquisaActivity.this, Capitulos.class, bundle, true);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         adapter.stopListening();
-
     }
-
 }

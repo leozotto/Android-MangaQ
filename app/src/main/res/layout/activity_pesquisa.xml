@@ -1,35 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.fragment.MainActivity">
+    tools:context=".activity.fragment.PesquisaActivity">
 
-    <EditText
-        android:id="@+id/listPesquisa"
+    <SearchView
+        android:id="@+id/searchView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Escreva o nome da história para a pesquisa"
-        android:gravity="center"/>
+        android:layout_height="56dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/colorPrimary"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="13dp"
+        android:hint="@string/ex_one_piece"
+        android:textColor="#fff"
+        android:textSize="23sp" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/historyList"
+        android:id="@+id/recyclerViewSearch"
         android:layout_width="match_parent"
-        android:layout_height="632dp"
+        android:layout_height="540dp"
         android:scrollbars="vertical" />
-    </ScrollView>
 
     <include
         layout="@layout/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="56dp" />
-
 
 </LinearLayout>
